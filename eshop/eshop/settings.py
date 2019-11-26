@@ -102,7 +102,7 @@ DATABASES = {
         'NAME': 'eshop',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
+        'HOST': '192.168.234.129',
         'PORT': '',
     },
     'OPTIONS': {
@@ -194,7 +194,7 @@ UEDITOR_SETTINGS = {
                       "attachment", "emotion", "date", "time"]]
     },
     'upload': {
-        "imageUrlPrefix": "http://127.0.0.1:8000",  # 图片访问路径前缀
+        "imageUrlPrefix": "http://192.168.234.129:8000",  # 图片访问路径前缀
         "imagePathFormat": "/media/goods/upload/{yyyy}{mm}{dd}/{time}{rand:6}"
     },
 }
@@ -218,7 +218,7 @@ REST_FRAMEWORK_EXTENSIONS = {
 # CACHES = {
 #     "default": {
 #         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "LOCATION": "redis://192.168.234.129:6379/1",
 #         "OPTIONS": {
 #             "CLIENT_CLASS": "django_redis.client.DefaultClient",
 #         }

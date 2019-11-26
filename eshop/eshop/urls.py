@@ -29,21 +29,22 @@ from users.views import SmsCodeViewSet, UserViewSet, IndexView
 from user_operation.views import UserFavViewset, LeavingMessageViewset, AddressViewset
 from trade.views import ShoppingCartViewset, OrderViewset, AliayView
 from django.views.generic import TemplateView
+
 # from utils.image_upload import UploadImage
 
 router = DefaultRouter()
 router.register(r'goods', GoodsListViewSet, base_name="goods")  # 配置goods的url
 router.register(r'code', SmsCodeViewSet, base_name="code")  #
 router.register(r'categorys', CategoryViewSet, base_name="categorys")  # 配置category的url
-router.register(r'users', UserViewSet, base_name="users") # 用户操作
+router.register(r'users', UserViewSet, base_name="users")  # 用户操作
 router.register(r'userfavs', UserFavViewset, base_name="userfavs")  # 收藏
 router.register(r'messages', LeavingMessageViewset, base_name="messages")  # 留言
 router.register(r'address', AddressViewset, base_name="address")  # 收货地址
 router.register(r'shopcarts', ShoppingCartViewset, base_name="shopcarts")  # 购物车
 router.register(r'orders', OrderViewset, base_name="orders")  # 订单相关
 router.register(r'banners', BannerViewset, base_name="banners")  # 轮播图
-router.register(r'hotsearchs', HotSearchsViewset, base_name="hotsearchs") # 热搜
-router.register(r'indexgoods', IndexCategoryViewset, base_name="indexgoods") # 热搜
+router.register(r'hotsearchs', HotSearchsViewset, base_name="hotsearchs")  # 热搜
+router.register(r'indexgoods', IndexCategoryViewset, base_name="indexgoods")  # 热搜
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
@@ -71,7 +72,7 @@ urlpatterns = [
     url(r'index/', IndexView.as_view(), name="index"),
 
     # 第三方登录
-    url('', include('social_django.urls', namespace='social'))
+    url('', include('social_django.urls', namespace='social')),
 
     # 七牛云上传测试
     # url(r'^upload/$', view=UploadImage.as_view(), name='upload'),
@@ -79,4 +80,5 @@ urlpatterns = [
 
     # 商品列表页 非DRF方法
     # url(r'goods/$', goods_list, name="good-list"),
+    url(r'docs/', include_docs_urls(title='Eshop API')),
 ]
