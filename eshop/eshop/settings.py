@@ -150,6 +150,9 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media").replace('\\', '/')
 
 REST_FRAMEWORK = {
+    # docs
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema',
+
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     # 验证用户登录
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -215,15 +218,15 @@ REST_FRAMEWORK_EXTENSIONS = {
 }
 
 # 配置django-redis缓存
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://192.168.234.129:6379/1",
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#         }
-#     }
-# }
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://:redis@192.168.234.129:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 
 # 第三方登录
 SOCIAL_AUTH_WEIBO_KEY = ''
