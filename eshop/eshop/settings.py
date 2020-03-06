@@ -102,7 +102,7 @@ DATABASES = {
         'NAME': 'eshop',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': '192.168.234.129',
+        'HOST': '192.168.129.128',
         'PORT': '',
     },
     'OPTIONS': {
@@ -221,7 +221,7 @@ REST_FRAMEWORK_EXTENSIONS = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://:redis@192.168.234.129:6379/1",
+        "LOCATION": "redis://192.168.129.128:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }

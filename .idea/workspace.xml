@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9cc59feb-daa1-4b0c-af73-9fed4bb40310" name="Default Changelist" comment="" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="e527e412-e4d8-420d-b2cf-a380461d61e9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Django.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Django.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -11,20 +14,28 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1TvDZSH2k51dZwd16pGQ874fhy3" />
-  <component name="PropertiesComponent">
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/dailyfresh" />
+  <component name="ProjectId" id="1WSexjXVPNaWKpUZPxL8o7iSHy9" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/eshop" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
       <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
       </list>
     </option>
   </component>
@@ -33,13 +44,40 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="9cc59feb-daa1-4b0c-af73-9fed4bb40310" name="Default Changelist" comment="" />
-      <created>1574331732675</created>
+      <changelist id="e527e412-e4d8-420d-b2cf-a380461d61e9" name="Default Changelist" comment="" />
+      <created>1579147671779</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1574331732675</updated>
-      <workItem from="1574331738284" duration="41000" />
+      <updated>1579147671779</updated>
+      <workItem from="1579147674841" duration="82000" />
+      <workItem from="1580795872122" duration="111000" />
+      <workItem from="1580816680910" duration="357000" />
+      <workItem from="1580817097345" duration="17000" />
+      <workItem from="1580818031727" duration="127000" />
+      <workItem from="1580818173709" duration="11000" />
+      <workItem from="1580955413631" duration="941000" />
+      <workItem from="1581485665958" duration="530000" />
+      <workItem from="1582200584308" duration="1333000" />
+      <workItem from="1582282316019" duration="1992000" />
+      <workItem from="1582504545864" duration="1107000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1010" y="435" width="614" height="597" key="FileChooserDialogImpl" timestamp="1582505652147">
+      <screen x="0" y="28" width="2560" height="1412" />
+    </state>
+    <state x="1010" y="435" width="614" height="597" key="FileChooserDialogImpl/0.28.2560.1412@0.28.2560.1412" timestamp="1582505652147" />
+    <state x="638" y="281" key="SettingsEditor" timestamp="1581486150373">
+      <screen x="0" y="28" width="2560" height="1412" />
+    </state>
+    <state x="638" y="281" key="SettingsEditor/0.28.2560.1412@0.28.2560.1412" timestamp="1581486150373" />
+    <state x="854" y="523" key="com.intellij.ide.util.TipDialog" timestamp="1582504548121">
+      <screen x="0" y="28" width="2560" height="1412" />
+    </state>
+    <state x="854" y="523" key="com.intellij.ide.util.TipDialog/0.28.2560.1412@0.28.2560.1412" timestamp="1582504548121" />
   </component>
 </project>
