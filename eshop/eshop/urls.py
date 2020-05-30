@@ -33,18 +33,18 @@ from django.views.generic import TemplateView
 # from utils.image_upload import UploadImage
 
 router = DefaultRouter()
-router.register(r'goods', GoodsListViewSet, base_name="goods")  # 配置goods的url
-router.register(r'code', SmsCodeViewSet, base_name="code")  #
-router.register(r'categorys', CategoryViewSet, base_name="categorys")  # 配置category的url
-router.register(r'users', UserViewSet, base_name="users")  # 用户操作
-router.register(r'userfavs', UserFavViewset, base_name="userfavs")  # 收藏
-router.register(r'messages', LeavingMessageViewset, base_name="messages")  # 留言
-router.register(r'address', AddressViewset, base_name="address")  # 收货地址
-router.register(r'shopcarts', ShoppingCartViewset, base_name="shopcarts")  # 购物车
-router.register(r'orders', OrderViewset, base_name="orders")  # 订单相关
-router.register(r'banners', BannerViewset, base_name="banners")  # 轮播图
-router.register(r'hotsearchs', HotSearchsViewset, base_name="hotsearchs")  # 热搜
-router.register(r'indexgoods', IndexCategoryViewset, base_name="indexgoods")  # 热搜
+router.register(r'goods', GoodsListViewSet, basename="goods")  # 配置goods的url
+router.register(r'code', SmsCodeViewSet, basename="code")  #
+router.register(r'categorys', CategoryViewSet, basename="categorys")  # 配置category的url
+router.register(r'users', UserViewSet, basename="users")  # 用户操作
+router.register(r'userfavs', UserFavViewset, basename="userfavs")  # 收藏
+router.register(r'messages', LeavingMessageViewset, basename="messages")  # 留言
+router.register(r'address', AddressViewset, basename="address")  # 收货地址
+router.register(r'shopcarts', ShoppingCartViewset, basename="shopcarts")  # 购物车
+router.register(r'orders', OrderViewset, basename="orders")  # 订单相关
+router.register(r'banners', BannerViewset, basename="banners")  # 轮播图
+router.register(r'hotsearchs', HotSearchsViewset, basename="hotsearchs")  # 热搜
+router.register(r'indexgoods', IndexCategoryViewset, basename="indexgoods")  # 热搜
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),

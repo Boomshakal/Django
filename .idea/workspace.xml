@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="e527e412-e4d8-420d-b2cf-a380461d61e9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
+=======
+    <list default="true" id="e527e412-e4d8-420d-b2cf-a380461d61e9" name="Default Changelist" comment="" />
+>>>>>>> da8398cdd756ada16abf0b991626a4e9577ddfec
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,7 +26,11 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+<<<<<<< HEAD
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../meiduo_mall/meiduo_mall" />
+=======
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+>>>>>>> da8398cdd756ada16abf0b991626a4e9577ddfec
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="ServiceViewManager">
@@ -58,10 +66,14 @@
       <workItem from="1582200584308" duration="1333000" />
       <workItem from="1582282316019" duration="1992000" />
       <workItem from="1582504545864" duration="1107000" />
+<<<<<<< HEAD
       <workItem from="1585044966260" duration="643000" />
       <workItem from="1585048839150" duration="220000" />
       <workItem from="1585049111970" duration="11000" />
       <workItem from="1585049219601" duration="30000" />
+=======
+      <workItem from="1588929584122" duration="95000" />
+>>>>>>> da8398cdd756ada16abf0b991626a4e9577ddfec
     </task>
     <servers />
   </component>
@@ -69,10 +81,18 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+<<<<<<< HEAD
     <state x="1010" y="435" width="614" height="597" key="FileChooserDialogImpl" timestamp="1585049246789">
       <screen x="0" y="28" width="2560" height="1412" />
     </state>
     <state x="1010" y="435" width="614" height="597" key="FileChooserDialogImpl/0.28.2560.1412@0.28.2560.1412" timestamp="1585049246789" />
+=======
+    <state x="606" y="238" width="614" height="597" key="FileChooserDialogImpl" timestamp="1588929665249">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="606" y="238" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1588929665249" />
+    <state x="1010" y="435" width="614" height="597" key="FileChooserDialogImpl/0.28.2560.1412@0.28.2560.1412" timestamp="1582505652147" />
+>>>>>>> da8398cdd756ada16abf0b991626a4e9577ddfec
     <state x="638" y="281" key="SettingsEditor" timestamp="1581486150373">
       <screen x="0" y="28" width="2560" height="1412" />
     </state>
