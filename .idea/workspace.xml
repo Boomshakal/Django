@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e527e412-e4d8-420d-b2cf-a380461d61e9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Django.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Django.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,7 +22,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/eshop" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../meiduo_mall/meiduo_mall" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="ServiceViewManager">
@@ -60,6 +58,10 @@
       <workItem from="1582200584308" duration="1333000" />
       <workItem from="1582282316019" duration="1992000" />
       <workItem from="1582504545864" duration="1107000" />
+      <workItem from="1585044966260" duration="643000" />
+      <workItem from="1585048839150" duration="220000" />
+      <workItem from="1585049111970" duration="11000" />
+      <workItem from="1585049219601" duration="30000" />
     </task>
     <servers />
   </component>
@@ -67,17 +69,17 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1010" y="435" width="614" height="597" key="FileChooserDialogImpl" timestamp="1582505652147">
+    <state x="1010" y="435" width="614" height="597" key="FileChooserDialogImpl" timestamp="1585049246789">
       <screen x="0" y="28" width="2560" height="1412" />
     </state>
-    <state x="1010" y="435" width="614" height="597" key="FileChooserDialogImpl/0.28.2560.1412@0.28.2560.1412" timestamp="1582505652147" />
+    <state x="1010" y="435" width="614" height="597" key="FileChooserDialogImpl/0.28.2560.1412@0.28.2560.1412" timestamp="1585049246789" />
     <state x="638" y="281" key="SettingsEditor" timestamp="1581486150373">
       <screen x="0" y="28" width="2560" height="1412" />
     </state>
     <state x="638" y="281" key="SettingsEditor/0.28.2560.1412@0.28.2560.1412" timestamp="1581486150373" />
-    <state x="854" y="523" key="com.intellij.ide.util.TipDialog" timestamp="1582504548121">
+    <state x="854" y="523" key="com.intellij.ide.util.TipDialog" timestamp="1585049219770">
       <screen x="0" y="28" width="2560" height="1412" />
     </state>
-    <state x="854" y="523" key="com.intellij.ide.util.TipDialog/0.28.2560.1412@0.28.2560.1412" timestamp="1582504548121" />
+    <state x="854" y="523" key="com.intellij.ide.util.TipDialog/0.28.2560.1412@0.28.2560.1412" timestamp="1585049219770" />
   </component>
 </project>
