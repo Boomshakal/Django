@@ -2,9 +2,11 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.generics import ListAPIView
 
 # Create your views here.
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.viewsets import ModelViewSet
 
-from .models import SKU
-from .serializers import SKUSerializer
+from .models import SKU, Goods
+from .serializers import SKUSerializer, GoodsSerializer
 
 
 class SKUListView(ListAPIView):
@@ -23,3 +25,16 @@ class SKUListView(ListAPIView):
         category_id = self.kwargs['category_id']
         # 以category_id 对SKU进行过滤，保证查询到的sku信息都是指定的category_id所在的分类
         return SKU.objects.filter(category_id=category_id, is_launched=True)
+
+
+class GoodsPagination(PageNumberPagination):
+    page_size = 12
+    page_size_query_param = 'page_size'
+    page_query_param = 'page'
+    max_page_size = 20
+
+
+class GoodsViewSet(ModelViewSet):
+    queryset = Goods.objects.all()
+    serializer_class = GoodsSerializer
+    pagination_class = GoodsPagination
