@@ -17,6 +17,11 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired
 from utils.mixin import LoginRequiredMixin
 from django_redis import get_redis_connection
+from utils.MFA import restful  # 自定义的restful
+import base64, time, struct, hmac, hashlib
+import pyotp
+from qrcode import QRCode
+from qrcode import constants
 import re
 import time
 
@@ -67,6 +72,7 @@ def register(request):
 
 class RegisterView(View):
     """注册"""
+
     def get(self, request):
         # 显示注册页面
         return render(request, 'df_user/register.html')
@@ -139,6 +145,7 @@ class RegisterView(View):
 # /user/active/加密信息token
 class ActiveView(View):
     """用户激活"""
+
     def get(self, request, token):
         # 进行用户激活
         # 进行解密，获取要激活的用户信息
@@ -163,6 +170,7 @@ class ActiveView(View):
 # /user/login
 class LoginView(View):
     """登录"""
+
     def get(self, request):
         # 显示登录页面
         # 判断是否记住密码
@@ -204,7 +212,7 @@ class LoginView(View):
                 # 判断是否需要记住用户名
                 remember = request.POST.get('remember')
                 if remember == 'on':
-                    response.set_cookie('username', username, max_age=7*24*3600)
+                    response.set_cookie('username', username, max_age=7 * 24 * 3600)
                 else:
                     response.delete_cookie('username')
 
@@ -221,6 +229,7 @@ class LoginView(View):
 # /user/logout
 class LogoutView(View):
     """退出登录"""
+
     def get(self, request):
         logout(request)
 
@@ -230,6 +239,7 @@ class LogoutView(View):
 # /user
 class UserInfoView(LoginRequiredMixin, View):
     """用户中心-信息页"""
+
     def get(self, request):
         # 获取个人信息
         user = request.user
@@ -270,6 +280,7 @@ class UserInfoView(LoginRequiredMixin, View):
 # /user/order
 class UserOrderView(LoginRequiredMixin, View):
     """用户中心-订单页"""
+
     def get(self, request, page):
         # 获取用户的订单信息
         user = request.user
@@ -315,9 +326,9 @@ class UserOrderView(LoginRequiredMixin, View):
         elif page <= 3:
             pages = range(1, 6)
         elif num_pages - page <= 2:
-            pages = range(num_pages-4, num_pages+1)
+            pages = range(num_pages - 4, num_pages + 1)
         else:
-            pages = range(page-2, page+3)
+            pages = range(page - 2, page + 3)
 
         # 组织上下文
         context = {'order_page': order_page,
@@ -330,6 +341,7 @@ class UserOrderView(LoginRequiredMixin, View):
 # /user/address
 class AddressView(LoginRequiredMixin, View):
     """用户中心-地址页"""
+
     def get(self, request):
         # django框架会给request对象添加一个属性user
         # 如果用户已登录，user的类型User
@@ -346,7 +358,8 @@ class AddressView(LoginRequiredMixin, View):
         #     address = None  # 不存在默认地址
         address = Address.objects.get_default_address(user)
 
-        return render(request, 'df_user/user_center_site.html', {'title': '用户中心-收货地址', 'page': 'address', 'address': address})
+        return render(request, 'df_user/user_center_site.html',
+                      {'title': '用户中心-收货地址', 'page': 'address', 'address': address})
 
     def post(self, request):
         # 地址添加
@@ -394,3 +407,23 @@ class AddressView(LoginRequiredMixin, View):
 
         # 返回应答
         return redirect(reverse('user:address'))  # get的请求方式
+
+
+def getMFAinfo(request):
+    name = request.GET['name'] + ':SmartMS'
+    # Secret = request.GET['secret']
+    Secret = pyotp.random_base32()
+    K = base64.b32decode(Secret, True)
+    C = struct.pack(">Q", int(time.time()) // 30)
+    H = hmac.new(K, C, hashlib.sha1).digest()
+    O = H[19] & 15  # bin(15)=00001111=0b1111
+    DynamicPasswd = str((struct.unpack(">I", H[O:O + 4])[0] & 0x7fffffff) % 1000000)
+    TOTP = str(0) + str(DynamicPasswd) if len(DynamicPasswd) < 6 else DynamicPasswd
+    url = "otpauth://totp/" + name + "?secret=%s" % Secret + "&issuer=Anchnet"
+    qr = QRCode(version=1, error_correction=constants.ERROR_CORRECT_L, box_size=6, border=4)
+    qr.add_data(url)
+    qr.make(fit=True)
+    img = qr.make_image()
+    codeinfo = {"name": name, "MFAcode": TOTP, "Secret": Secret, "QRurl": url}
+
+    return restful.result(message="获取成功", data=codeinfo)

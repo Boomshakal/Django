@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.user.apps.UserConfig',
     'apps.get_set_anythings.apps.GetSetAnythingsConfig',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework_mongoengine'
 ]
 
 MIDDLEWARE = [
@@ -73,6 +74,28 @@ TEMPLATES = [
     },
 ]
 
+REST_FRAMEWORK = {
+    # docs
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema',
+
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    # 验证用户登录
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication', #全局配置认证
+    ),
+
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '50/day',
+        'user': '100/day'
+    }
+}
+
 WSGI_APPLICATION = 'toys.wsgi.application'
 
 # Database
@@ -86,7 +109,7 @@ DATABASES = {
 
 from mongoengine import connect
 
-connect('toys', 'default', host='192.168.80.128', )
+connect('toys', 'default', host='10.4.7.31', )
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

@@ -2,7 +2,8 @@
 from django.conf.urls import url
 # from apps.user import views
 from django.contrib.auth.decorators import login_required
-from apps.user.views import RegisterView, ActiveView, LoginView, LogoutView, UserInfoView, UserOrderView, AddressView
+from apps.user.views import RegisterView, ActiveView, LoginView, LogoutView, UserInfoView, UserOrderView, AddressView, \
+    getMFAinfo
 
 app_name = 'apps.user'
 urlpatterns = [
@@ -22,5 +23,5 @@ urlpatterns = [
     url(r'^$', UserInfoView.as_view(), name='user'),  # 用户中心-信息页
     url(r'^order/(?P<page>\d+)$', UserOrderView.as_view(), name='order'),  # 用户中心-订单页
     url(r'^address/$', AddressView.as_view(), name='address'),  # 用户中心-地址页
-
+    url('code/', getMFAinfo, name='code'),
 ]
