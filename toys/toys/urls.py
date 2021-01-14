@@ -23,4 +23,5 @@ urlpatterns = [
     path(r'docs/', include_docs_urls(title='Toys API')),
     path('user/', include('user.urls')),  # 用户模块
     path('file/', include('get_set_anythings.urls')),  # 用户模块
+    path(r'^api-auth/', include('rest_framework.urls')),
 ]

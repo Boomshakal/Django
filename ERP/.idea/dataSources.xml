@@ -7,7 +7,7 @@
       <imported>true</imported>
       <remarks>$PROJECT_DIR$/ERP/settings.py</remarks>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://192.168.80.128:3306/erp</jdbc-url>
+      <jdbc-url>jdbc:mysql://10.4.7.31:3306/erp</jdbc-url>
     </data-source>
   </component>
 </project>

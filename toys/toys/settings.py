@@ -107,6 +107,8 @@ DATABASES = {
     },
 }
 
+AUTH_USER_MODEL = 'user.UserProfile'
+
 from mongoengine import connect
 
 connect('toys', 'default', host='10.4.7.31', )
