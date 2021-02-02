@@ -105,7 +105,7 @@ DATABASES = {
         'NAME': 'ikahe',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': '192.168.80.128',
+        'HOST': '10.4.7.31',
         'PORT': '3306',
     },
     'OPTIONS': {

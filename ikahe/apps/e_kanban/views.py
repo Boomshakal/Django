@@ -1,5 +1,6 @@
 from pymssql import ProgrammingError
 from pymssql import OperationalError
+from rest_framework import throttling
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -11,8 +12,19 @@ from utils.database.database_connect import DatabasePool
 from utils.exceptions import CommonException
 from utils.response import BaseResponse
 
+import random
+
+
+class RandomRateThrottle(throttling.BaseThrottle):
+    def allow_request(self, request, view):
+        t = random.randint(1, 10)
+        print(t)
+        return True
+
 
 class JihuaView(APIView):
+    # throttle_classes = (RandomRateThrottle,)
+
     def get(self, request):
         response = BaseResponse()
         sql = '''
