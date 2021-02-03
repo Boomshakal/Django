@@ -1,0 +1,238 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/fontawesome.min.css"
+          rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="{% static 'accounting/css/accounting.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/jquery-datetimepicker@2.5.21/build/jquery.datetimepicker.min.css"
+          rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery-datetimepicker@2.5.21/build/jquery.datetimepicker.full.min.js"></script>
+    <title>记录收支</title>
+</head>
+<body>
+{% if user.is_authenticated %}
+    <div class="tab-content">
+        <div id="home" class="container-fluid tab-pane active"><br>
+            <div class="row">
+                <div class="col-lg-6 mb-6">
+                    <div id="month-overview" align="center">
+                        <span>当月结余</span>
+                        <h5>{{ mounth_dif }}</h5>
+                    </div>
+                    <div class="row">
+                        <div class="col" align="center">
+                            <span>当月收入</span>
+                            <h6>{{ month_amount_income.amount__sum }}</h6>
+                        </div>
+                        <div class="col" align="center">
+                            <span>当月支出</span>
+                            <h6>{{ month_amount_expense.amount__sum }}</h6>
+                        </div>
+                    </div>
+                    <hr width="90%" style="border:1px solid #FFD700;"/>
+                    <div id="account-overview" align="center">
+                        <ul class="list-group">
+                            {% for account in accounts %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {% if account.amount > 0 %}
+                                        <span><i class="{{ account.icon }}"></i>&ensp;{{ account.name }}</span>
+                                        <span class="badge badge-pill badge-success">{{ account.amount }}</span>
+                                    {% else %}
+                                        <span><i class="{{ account.icon }}"></i>&ensp;{{ account.name }}</span>
+                                        <span class="badge badge-pill badge-danger">{{ account.amount }}</span>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-6" id="history-records-overview" align="center">
+                    <form action="{% url 'record_income_expense' %}" method="post" class="history-record-form">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="col-md-3 mb-3">
+                                <select class="custom-select" id="account-list" name="account">
+                                    {% for a in accounts %}
+                                        <option value="{{ a.id }}">{{ a.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <select class="custom-select" id="ie-type-list">
+                                    {% for ie in ie_types %}
+                                        <option value="{{ ie }}">{{ ie }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <select class="custom-select" id="category-list" name="category">
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <select class="custom-select" id="sub-category-list" name="sub_category">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-5 mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <select class="custom-select" id="currency-list" name="currency">
+                                            {% for c in currencies %}
+                                                <option value="{{ c.id }}">{{ c.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <input type="text" name="amount" aria-label="Money Amount" placeholder="金额"
+                                           class="form-control" required="">
+                                </div>
+                            </div>
+                            <div class="col-md-7 mb-3">
+                                <input type="text" name="comment" aria-label="Comment" placeholder="备注"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <input id="time-occurrence" name="time_of_occurrence" type="text" class="form-control">
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <button type="submit" class="btn btn-info btn-block">记录账单</button>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <h5>当月账单列表</h5>
+                    <hr width="90%" class="main-separator"/>
+                    {% for day, records in current_month_records.items %}
+                        <div class="card" style="margin: 0px 20px 10px 20px;">
+                            <div class="card-header" style="font-size: 80%;">
+                                <div style="float: left;">{{ day }}</div>
+                                {% load filter_dict %}
+                                <div style="float: right;">
+                                    收入:{{ day_income_expense|get_dict_value:day|get_dict_value:'income' }} |
+                                    支出:{{ day_income_expense|get_dict_value:day|get_dict_value:'expense' }}
+                                </div>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                {% for hr in records %}
+                                    <li class="list-group-item">
+                                        {% if hr.sub_category %}
+                                            <div style="float: left;">{{ hr.category }} - {{ hr.sub_category }}</div>
+                                        {% else %}
+                                            <div style="float: left;">{{ hr.category }}</div>
+                                        {% endif %}
+                                        {% if hr.category.category_type == '收入' %}
+                                            <div style="float: right; color: green;">{{ hr.amount }}</div>
+                                        {% else %}
+                                            <div style="float: right; color: red;">{{ hr.amount }}</div>
+                                        {% endif %}
+                                        <br>
+                                        {% if hr.comment %}
+                                            <div style="float: left; font-size: 80%; color: gray;">{{ hr.comment }}</div>
+                                        {% endif %}
+                                        <div style="float: right; font-size: 80%; color: gray;">{{ hr.account }}</div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div id="charts" class="container tab-pane fade"><br>
+            <h3>在这里看图表分析</h3>
+            <p>这里会展示不同周期和不同类别的图表分析</p>
+        </div>
+    </div>
+{% else %}
+    <div class="unauthenticated">
+        <h3>Please login to view data or record expense</h3>
+    </div>
+{% endif %}
+</body>
+
+<script>
+    $.ajaxSetup({headers: {"X-CSRFToken": '{{ csrf_token }}'}});
+    $(function () {
+        var init_ie_type = 'expense'
+        var init_category_type = '餐饮'
+        $("#ie-type-list").find(`option[value=${init_ie_type}]`).attr("selected", true);
+        $.ajax({
+            type: "POST",
+            data: {ie_type: init_ie_type},
+            url: "{% url 'retrieve_category' %}",
+            cache: false,
+            dataType: "json",
+            success: function (result) {
+                var options = "";
+                result.forEach(function (val, index, arr) {
+                    new_option = '<option value="' + val.pk + '">' + val.fields.name + '</option>';
+                    options += new_option;
+                });
+                var category_list = document.getElementById("category-list");
+                category_list.innerHTML = options;
+                $("#category-list").find(`option[value=${init_category_type}]`).attr("selected", true);
+            }
+        });
+    })
+    $(function () {
+        $('#ie-type-list').change(function () {
+            var current_ie_type = $(this).children('option:selected').val();
+            $.ajax({
+                type: "POST",
+                data: {ie_type: current_ie_type},
+                url: "{% url 'retrieve_category' %}",
+                cache: false,
+                dataType: "json",
+                success: function (result) {
+                    var options = "";
+                    result.forEach(function (val, index, arr) {
+                        if (index == 0) {
+                            new_option = '<option value="' + val.pk + '" selected="selected">' + val.fields.name + '</option>';
+                            options += new_option;
+                        } else {
+                            new_option = '<option value="' + val.pk + '">' + val.fields.name + '</option>';
+                            options += new_option;
+                        }
+                    });
+                    var category_list = document.getElementById("category-list");
+                    category_list.innerHTML = options;
+                }
+            });
+        });
+    })
+</script>
+<script>
+    function getCurrentDateFormat() {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        if (month >= 1 && month <= 9) {
+            month = '0' + month;
+        }
+        if (day >= 0 && day <= 9) {
+            day = '0' + day;
+        }
+        var currentDate = year + '-' + month + '-' + day + " " + hour + ":" + minute;
+        return currentDate;
+    }
+</script>
+<script>
+    $("#time-occurrence").attr("value", getCurrentDateFormat());
+    $("#time-occurrence").datetimepicker({
+        format: 'Y-m-d H:i',
+    });
+</script>
+</html>
