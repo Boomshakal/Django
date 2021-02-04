@@ -23,6 +23,7 @@
         <div id="home" class="container-fluid tab-pane active"><br>
             <div class="row">
                 <div class="col-lg-6 mb-6">
+                    <div id="month-bar-chart" style="width:100%; height: 400px; padding: 10px 0px;"></div>
                     <div id="month-overview" align="center">
                         <span>当月结余</span>
                         <h5>{{ mounth_dif }}</h5>
@@ -30,11 +31,11 @@
                     <div class="row">
                         <div class="col" align="center">
                             <span>当月收入</span>
-                            <h6>{{ month_amount_income.amount__sum }}</h6>
+                            <h6>{{ month_amount_income }}</h6>
                         </div>
                         <div class="col" align="center">
                             <span>当月支出</span>
-                            <h6>{{ month_amount_expense.amount__sum }}</h6>
+                            <h6>{{ month_amount_expense }}</h6>
                         </div>
                     </div>
                     <hr width="90%" style="border:1px solid #FFD700;"/>
@@ -53,7 +54,9 @@
                             {% endfor %}
                         </ul>
                     </div>
+                    <hr width="90%" style="border:1px solid #FFD700;"/>
                 </div>
+
                 <div class="col-lg-6 mb-6" id="history-records-overview" align="center">
                     <form action="{% url 'record_income_expense' %}" method="post" class="history-record-form">
                         {% csrf_token %}
@@ -163,7 +166,7 @@
 <script>
     $.ajaxSetup({headers: {"X-CSRFToken": '{{ csrf_token }}'}});
     $(function () {
-        var init_ie_type = 'expense'
+        var init_ie_type = '支出'
         var init_category_type = '餐饮'
         $("#ie-type-list").find(`option[value=${init_ie_type}]`).attr("selected", true);
         $.ajax({
@@ -210,6 +213,34 @@
             });
         });
     })
+    $(function () {
+        $('#category-list').change(function () {
+            var category_id = $(this).children('option:selected').val();
+            console.log(category_id)
+            $.ajax({
+                type: "POST",
+                data: {category_id: category_id},
+                url: "{% url 'retrieve_sub_category' %}",
+                cache: false,
+                dataType: "json",
+                success: function (result) {
+                    console.log(JSON.stringify(result))
+                    var options = "";
+                    result.forEach(function (val, index, arr) {
+                        if (index == 0) {
+                            new_option = '<option value="' + val.pk + '" selected="selected">' + val.fields.name + '</option>';
+                            options += new_option;
+                        } else {
+                            new_option = '<option value="' + val.pk + '">' + val.fields.name + '</option>';
+                            options += new_option;
+                        }
+                    });
+                    var sub_category_list = document.getElementById("sub-category-list");
+                    sub_category_list.innerHTML = options;
+                }
+            });
+        });
+    })
 </script>
 <script>
     function getCurrentDateFormat() {
@@ -233,6 +264,72 @@
     $("#time-occurrence").attr("value", getCurrentDateFormat());
     $("#time-occurrence").datetimepicker({
         format: 'Y-m-d H:i',
+    });
+</script>
+<script>
+    var monthBarChart = echarts.init(document.getElementById('month-bar-chart'));
+    var monthBarOption = {
+        title: {
+            text: '当月每日收支记录',
+            left: 'center'
+        },
+        grid: {
+            right: '10px'
+        },
+        legend: {
+            data: ['支出', '收入'],
+            x: 'right',
+            y: 'top'
+        },
+        tooltip: {},
+        xAxis: {
+            data: [],
+            axisLabel: {
+                //interval: 3,
+                rotate: 30
+            },
+
+            splitLine: {
+                show: true
+            }
+        },
+        yAxis: {},
+        series: [{
+            name: '支出',
+            type: 'bar',
+            color: '#FF4500',
+            data: [],
+            animationDelay: function (idx) {
+                return idx * 10;
+            }
+        }, {
+            name: '收入',
+            type: 'bar',
+            color: '#3CB371',
+            data: [],
+            animationDelay: function (idx) {
+                return idx * 10 + 100;
+            }
+        }],
+        animationEasing: 'elasticOut',
+        animationDelayUpdate: function (idx) {
+            return idx * 5;
+        }
+    };
+    monthBarChart.setOption(monthBarOption);
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'retrieve_current_month_income_expense' %}",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+            console.log(result)
+            monthBarOption.xAxis.data = result["days"];
+            monthBarOption.series[0].data = result["days_expense"];
+            monthBarOption.series[1].data = result["days_income"];
+            monthBarChart.setOption(monthBarOption);
+        }
     });
 </script>
 </html>
