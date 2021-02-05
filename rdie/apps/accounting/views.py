@@ -1,3 +1,5 @@
+import calendar
+import datetime
 import decimal
 
 from django.core.serializers import serialize
@@ -24,11 +26,15 @@ def index(request):
 
     year = timezone.now().year
     month = timezone.now().month
-    month_amount_expense = HistoryRecord.objects.filter(time_of_occurrence__year=year, time_of_occurrence__month=month,
+    month_expense = HistoryRecord.objects.filter(time_of_occurrence__year=year, time_of_occurrence__month=month,
                                                         category__category_type='支出').aggregate(Sum('amount'))
-    month_amount_income = HistoryRecord.objects.filter(time_of_occurrence__year=year, time_of_occurrence__month=month,
+    month_income = HistoryRecord.objects.filter(time_of_occurrence__year=year, time_of_occurrence__month=month,
                                                        category__category_type='收入').aggregate(Sum('amount'))
-    mounth_dif = month_amount_income.get('amount__sum', 0) - month_amount_expense.get('amount__sum', 0)
+
+    month_amount_expense = month_expense['amount__sum'] if month_expense['amount__sum'] else 0
+    month_amount_income = month_income['amount__sum'] if month_income['amount__sum'] else 0
+    mounth_dif = month_amount_income - month_amount_expense
+
     datas = HistoryRecord.objects.filter(time_of_occurrence__year=year, time_of_occurrence__month=month)
     current_month_records = {}
     day_income_expense = {}
@@ -60,7 +66,17 @@ def index(request):
 
 def retrieve_category(request):
     ie_type = request.POST.get('ie_type')
+    print(ie_type)
     serialized_data = serialize('json', Category.objects.filter(category_type=ie_type))
+    print(serialized_data)
+    return HttpResponse(serialized_data)
+
+
+def retrieve_sub_category(request):
+    category_id = request.POST.get('category_id')
+    print(category_id)
+    serialized_data = serialize('json', SubCategory.objects.filter(parent_id=category_id))
+    print(serialized_data)
     return HttpResponse(serialized_data)
 
 
@@ -120,3 +136,62 @@ def record_income_expense(request):
         else:
             print("not valid in form")
     return redirect(index)
+
+
+def retrieve_current_month_income_expense(request):
+    if request.user.is_authenticated:
+        post_year = request.POST.get('year')
+        post_month = request.POST.get('month')
+        if post_year and post_month:
+            year = int(post_year)
+            month = int(post_month)
+        else:
+            today = datetime.date.today()
+            year = today.year
+            month = today.month
+        month_has_days = calendar.monthrange(year, month)[1]
+        days = [datetime.date(year, month, day).strftime("%Y-%m-%d") for day in range(1, month_has_days + 1)]
+        days_income = []
+        days_expense = []
+        category_names = []
+        month_category_income = {}
+        month_category_expense = {}
+        month_total_income = 0
+        month_total_expense = 0
+        month_history_records = HistoryRecord.objects.filter(time_of_occurrence__year=year,
+                                                             time_of_occurrence__month=month).order_by(
+            "time_of_occurrence")
+        for day in days:
+            day_history_records = month_history_records.filter(time_of_occurrence__day=int(day.split("-")[-1]))
+            day_income = 0
+            day_expense = 0
+            for hr in day_history_records:
+                hr_category = hr.category
+                if hr_category.category_type == "支出":
+                    day_expense += hr.amount
+                    month_total_expense += hr.amount
+                    if hr_category.name not in category_names:
+                        category_names.append(hr_category.name)
+                        month_category_expense[hr_category.name] = {"value": hr.amount, "name": hr_category.name}
+                    else:
+                        month_category_expense[hr_category.name]["value"] += hr.amount
+                elif hr_category.category_type == "收入":
+                    day_income += hr.amount
+                    month_total_income += hr.amount
+                    if hr_category.name not in category_names:
+                        category_names.append(hr_category.name)
+                        month_category_income[hr_category.name] = {"value": hr.amount, "name": hr_category.name}
+                    else:
+                        month_category_income[hr_category.name]["value"] += hr.amount
+            days_income.append(day_income)
+            days_expense.append(day_expense)
+        return JsonResponse({"days": days,
+                             "days_income": days_income,
+                             "days_expense": days_expense,
+                             "month_total_income": month_total_income,
+                             "month_total_expense": month_total_expense,
+                             "month_category_names": category_names,
+                             "month_category_income": list(month_category_income.values()),
+                             "month_category_expense": list(month_category_expense.values())})
+    else:
+        return JsonResponse({"error": "unauthenticated"})
