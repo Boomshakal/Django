@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'rdie.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'accouting',
+        'NAME': 'accounting',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': '10.4.7.41',
