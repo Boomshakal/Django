@@ -11,14 +11,17 @@ from .models import Goods, GoodsCategory, HotSearchWords, Banner
 from .serializer import GoodsSerializer, CategorySerializer, BannerSerializer, HotWordsSerializer
 from .serializer import IndexCategorySerializer
 from .filters import GoodsFilter
+
+
 # Create your views here.
 
 class IndexCategoryViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     首页商品分类数据
     """
-    queryset = GoodsCategory.objects.filter(is_tab=True, name__in=["生鲜食品", "酒水饮料","粮油副食"])
+    queryset = GoodsCategory.objects.filter(is_tab=True, name__in=["生鲜食品", "酒水饮料", "粮油副食"])
     serializer_class = IndexCategorySerializer
+
 
 class BannerViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
@@ -27,6 +30,7 @@ class BannerViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Banner.objects.all().order_by("index")
     serializer_class = BannerSerializer
 
+
 class HotSearchsViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     获取热搜词列表
@@ -34,24 +38,28 @@ class HotSearchsViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = HotSearchWords.objects.all().order_by("-index")
     serializer_class = HotWordsSerializer
 
+
 class GoodsPagination(PageNumberPagination):
     page_size = 12
     page_size_query_param = 'page_size'
     page_query_param = 'page'
     max_page_size = 20
 
-class GoodsListViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+
+class GoodsListViewSet(CacheResponseMixin, mixins.CreateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin,
+                       viewsets.GenericViewSet):
     """
     商品列表页, 分页, 搜索, 过滤, 排序
     """
     throttle_classes = (UserRateThrottle, AnonRateThrottle)
     queryset = Goods.objects.all()
     serializer_class = GoodsSerializer
-    pagination_class = GoodsPagination # 分页
+    pagination_class = GoodsPagination  # 分页
     # authentication_classes = (TokenAuthentication,)
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)  # 相等查询/模糊查询/排序查询
     filter_class = GoodsFilter
-    search_fields = ('name','goods_brief')   # 拓展用法: http://www.django-rest-framework.org/api-guide/filtering/#searchfilter
+    search_fields = (
+    'name', 'goods_brief')  # 拓展用法: http://www.django-rest-framework.org/api-guide/filtering/#searchfilter
     ordering_fields = ('sold_num', 'shop_price')
 
     # 点击数+1
@@ -61,6 +69,7 @@ class GoodsListViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
         instance.save()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
 
 class CategoryViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     """
@@ -72,8 +81,6 @@ class CategoryViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retrieve
     """
     queryset = GoodsCategory.objects.filter(category_type=1)
     serializer_class = CategorySerializer
-
-
 
 # generics.ListAPIView方法
 # from rest_framework import generics
