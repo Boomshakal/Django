@@ -140,7 +140,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.163.com'   # 发送邮件的邮箱的SMTP服务器，这里用了163邮箱
 EMAIL_PORT = 25     # 发件箱的SMTP服务器端口
 EMAIL_HOST_USER = 'lihuiminqq@163.com'    # 发送邮件的邮箱地址
-EMAIL_HOST_PASSWORD = 'Lhm922357'   # 发送邮件的邮箱密码(这里使用的是授权码)
+EMAIL_HOST_PASSWORD = 'xxxxxx'   # 发送邮件的邮箱密码(这里使用的是授权码)
 EMAIL_PROM = '天天生鲜<lihuiminqq@163.com>'  # 收件人看到的发件人
 
 # django的缓存配置, 使用redis
